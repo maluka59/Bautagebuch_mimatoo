@@ -1,0 +1,455 @@
+<title>Mimatoo Bautagebuch</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EEF0EC; --card:#FFFFFF; --card-2:#F5F7F3; --card-3:#E7EBE3;
+  --ink:#141C17; --ink-2:#4A574F; --ink-3:#7A8880; --line:#D7DDD3; --line-2:#C0C9BA;
+  --brand:#4E7A16; --brand-ink:#3C5F10; --brand-soft:#E6F0D6;
+  --ok:#2F7A3E; --ok-soft:#DFF0E1;
+  --wait:#8A6A0B; --wait-soft:#F7EBCB;
+  --late:#9C2C1C; --late-soft:#F8DFDA;
+  --plan:#5A6A61; --plan-soft:#E4E9E3;
+  --deep:#0E5A52; --deep-soft:#D6E9E5;
+  --sh:0 1px 2px rgba(20,28,23,.05),0 6px 18px -10px rgba(20,28,23,.16);
+  --ui:"Archivo",-apple-system,"Segoe UI",sans-serif;
+  --se:"Source Serif 4",Georgia,serif;
+  --mo:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C1210; --card:#141C18; --card-2:#1A241F; --card-3:#222D27;
+  --ink:#E9EFE8; --ink-2:#A5B2A8; --ink-3:#78867E; --line:#28352E; --line-2:#38473E;
+  --brand:#9CD246; --brand-ink:#B0DE60; --brand-soft:#21301A;
+  --ok:#63C077; --ok-soft:#152B1B;
+  --wait:#DCA43A; --wait-soft:#312610;
+  --late:#EA8874; --late-soft:#37201B;
+  --plan:#8A968D; --plan-soft:#1E2822;
+  --deep:#4FC3B4; --deep-soft:#0F312D;
+  --sh:0 1px 2px rgba(0,0,0,.4),0 6px 18px -10px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  --bg:#0C1210; --card:#141C18; --card-2:#1A241F; --card-3:#222D27;
+  --ink:#E9EFE8; --ink-2:#A5B2A8; --ink-3:#78867E; --line:#28352E; --line-2:#38473E;
+  --brand:#9CD246; --brand-ink:#B0DE60; --brand-soft:#21301A;
+  --ok:#63C077; --ok-soft:#152B1B;
+  --wait:#DCA43A; --wait-soft:#312610;
+  --late:#EA8874; --late-soft:#37201B;
+  --plan:#8A968D; --plan-soft:#1E2822;
+  --deep:#4FC3B4; --deep-soft:#0F312D;
+  --sh:0 1px 2px rgba(0,0,0,.4),0 6px 18px -10px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mo);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(14px,2.5vw,28px) 64px}
+
+/* demo banner */
+.demo{background:var(--deep-soft);border-bottom:1px solid var(--line);padding:8px 0}
+.demo .wrap{padding-top:0;padding-bottom:0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--deep)}
+.demo b{font-weight:600}
+
+/* topbar */
+.top{padding:20px 0 0}
+.brandrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:20px;letter-spacing:-.02em}
+.logo i{width:10px;height:10px;border-radius:50%;background:var(--brand);display:block}
+.logo span{color:var(--ink-3);font-weight:500}
+.who{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2)}
+.who .av{width:28px;height:28px;border-radius:50%;background:var(--brand-soft);color:var(--brand-ink);display:grid;place-items:center;font-weight:600;font-size:12px}
+.iconbtn{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:6px 11px;font-family:var(--ui);font-size:12.5px;color:var(--ink-2);cursor:pointer}
+.iconbtn:hover{border-color:var(--line-2);color:var(--ink)}
+
+/* trust strip */
+.trust{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:11px;overflow:hidden;margin:16px 0 0}
+.trust>div{background:var(--card);padding:12px 15px}
+.trust .v{font-family:var(--mo);font-size:20px;font-weight:600;letter-spacing:-.02em;line-height:1.15}
+.trust .k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
+.trust .g .v{color:var(--ok)} .trust .w .v{color:var(--wait)} .trust .d .v{color:var(--deep)}
+
+/* date rail */
+.dates{display:flex;gap:6px;align-items:center;margin:18px 0 0;overflow-x:auto;padding-bottom:2px}
+.dates .lbl{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);flex:none;margin-right:4px}
+.dchip{flex:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-family:var(--mo);font-size:12px;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.dchip:hover{border-color:var(--line-2)}
+.dchip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* grid */
+.cols{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;margin-top:16px;align-items:start}
+@media (max-width:940px){.cols{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--sh);margin-bottom:16px;overflow:hidden}
+.card>header{display:flex;align-items:baseline;gap:10px;padding:15px 18px 11px;border-bottom:1px solid var(--line)}
+.card>header h2{margin:0;font-size:15px;font-weight:600;letter-spacing:-.005em}
+.card>header .sub{font-size:12px;color:var(--ink-3);margin-left:auto;font-family:var(--mo)}
+.card .pad{padding:15px 18px 18px}
+
+/* day slice */
+.day h3{margin:0 0 3px;font-family:var(--se);font-size:21px;font-weight:600;letter-spacing:-.01em}
+.day .meta{font-family:var(--mo);font-size:11.5px;color:var(--ink-3);margin-bottom:14px}
+.entry{display:grid;grid-template-columns:26px 1fr;gap:11px;padding:11px 0;border-top:1px solid var(--line)}
+.entry:first-of-type{border-top:0;padding-top:2px}
+.entry .ic{width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:11px;font-weight:700;font-family:var(--ui)}
+.entry.done .ic{background:var(--ok-soft);color:var(--ok)}
+.entry.work .ic{background:var(--card-3);color:var(--ink-2)}
+.entry.warn .ic{background:var(--wait-soft);color:var(--wait)}
+.entry p{margin:0;font-family:var(--se);font-size:16px;line-height:1.5}
+.entry .why{margin-top:5px;font-family:var(--ui);font-size:13px;color:var(--ink-2)}
+.entry .act{margin-top:8px;display:flex;gap:7px;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:5px;background:var(--brand-soft);color:var(--brand-ink);border:1px solid transparent;border-radius:99px;padding:4px 11px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--ui)}
+.pill:hover{border-color:var(--brand)}
+.pill.ghost{background:transparent;color:var(--ink-2);border-color:var(--line)}
+.pill.ghost:hover{border-color:var(--line-2);color:var(--ink)}
+
+/* modules */
+.mod{display:grid;grid-template-columns:1fr auto;gap:10px 12px;padding:12px 18px;border-top:1px solid var(--line);align-items:center}
+.mod:first-child{border-top:0}
+.mod .nm{font-weight:600;font-size:14.5px}
+.mod .id{font-family:var(--mo);font-size:11px;color:var(--ink-3);margin-bottom:1px}
+.mod .st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.st.abg{background:var(--ok-soft);color:var(--ok)}
+.st.test{background:var(--brand-soft);color:var(--brand-ink)}
+.st.bau{background:var(--wait-soft);color:var(--wait)}
+.st.plan{background:var(--plan-soft);color:var(--plan)}
+.mod .acts{grid-column:1/-1;display:flex;gap:7px;flex-wrap:wrap}
+.mod .days{font-family:var(--mo);font-size:11px;color:var(--ink-3);margin-top:3px}
+.mod .days.long{color:var(--late);font-weight:500}
+
+/* promises */
+.pr{display:grid;grid-template-columns:1fr 74px 74px 26px;gap:8px;padding:9px 18px;border-top:1px solid var(--line);align-items:center;font-size:13.5px}
+.pr:first-child{border-top:0}
+.pr .h{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.pr .d{font-family:var(--mo);font-size:12px;color:var(--ink-2)}
+.pr .m{text-align:center;font-weight:700}
+.pr.ok .m{color:var(--ok)} .pr.late .m{color:var(--late)} .pr.run .m{color:var(--wait)}
+.pr.late .d.ist{color:var(--late)}
+
+/* risks */
+.risk{padding:13px 18px;border-top:1px solid var(--line);border-left:3px solid transparent}
+.risk:first-child{border-top:0}
+.risk.y{border-left-color:var(--wait);background:linear-gradient(90deg,var(--wait-soft),transparent 46%)}
+.risk.r{border-left-color:var(--late);background:linear-gradient(90deg,var(--late-soft),transparent 46%)}
+.risk h4{margin:0 0 6px;font-size:14px;font-weight:600}
+.risk dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:13.5px}
+.risk dt{color:var(--ink-3);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding-top:3px}
+.risk dd{margin:0;color:var(--ink-2)}
+
+/* machine */
+.mach{padding:4px 0}
+.mrow{display:grid;grid-template-columns:1fr auto;gap:10px;padding:8px 18px;font-size:13.5px;align-items:baseline}
+.mrow:nth-child(odd){background:var(--card-2)}
+.mrow .k{color:var(--ink-2)}
+.mrow .v{font-family:var(--mo);font-size:13px;font-weight:500}
+.mrow .v.ok{color:var(--ok)} .mrow .v.warn{color:var(--wait)}
+.bar{height:5px;background:var(--card-3);border-radius:99px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:var(--brand);border-radius:99px}
+.rulesbox{margin:14px 18px 4px;padding:13px 15px;background:var(--brand-soft);border-radius:9px}
+.rulesbox .big{font-family:var(--mo);font-size:22px;font-weight:600;color:var(--brand-ink);letter-spacing:-.02em}
+.rulesbox p{margin:4px 0 0;font-size:13px;color:var(--ink-2)}
+
+/* burnup */
+.burn{padding:16px 18px 8px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);margin-top:8px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:3px;display:block}
+
+/* question composer */
+.qbox{margin:0 18px 16px;border:1px solid var(--line);border-radius:9px;padding:12px 14px;background:var(--card-2)}
+.qbox textarea{width:100%;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);font-family:var(--ui);font-size:14px;padding:9px 11px;resize:vertical;min-height:64px}
+.qbox .r{display:flex;gap:8px;align-items:center;margin-top:9px}
+.qbox .sla{margin-left:auto;font-size:11.5px;color:var(--ink-3)}
+.hidden{display:none}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,140%);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:10px;font-size:13.5px;font-weight:500;box-shadow:var(--sh);z-index:60;transition:transform .25s cubic-bezier(.4,0,.2,1);max-width:90vw;text-align:center}
+.toast.on{transform:translate(-50%,0)}
+
+footer{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between}
+</style>
+
+<div class="demo"><div class="wrap">
+  <b>Prototyp mit Beispieldaten.</b> So sieht das Bautagebuch für Frau Hoechteln aus — hier dargestellt für einen Tag mitten in Welle 3. Alle Namen, Zahlen und Termine sind erfunden.
+</div></div>
+
+<div class="wrap">
+<header class="top">
+  <div class="brandrow">
+    <div class="logo"><i></i>mimatoo <span>Bautagebuch</span></div>
+    <div class="who">
+      <button class="iconbtn" id="tt">Ansicht</button>
+      <span class="av">MH</span>
+      <span>Frau Hoechteln</span>
+    </div>
+  </div>
+
+  <div class="trust" id="trust"></div>
+
+  <div class="dates">
+    <span class="lbl">Archiv</span>
+    <button class="dchip" data-d="2">Mo 18.01.</button>
+    <button class="dchip" data-d="1">Di 19.01.</button>
+    <button class="dchip on" data-d="0">Mi 20.01. · heute</button>
+  </div>
+</header>
+
+<div class="cols">
+  <!-- LEFT -->
+  <div>
+    <section class="card">
+      <header><h2>Heute</h2><span class="sub" id="stamp"></span></header>
+      <div class="pad day" id="day"></div>
+    </section>
+
+    <section class="card">
+      <header><h2>Zusagen</h2><span class="sub">14 von 15 gehalten</span></header>
+      <div>
+        <div class="pr"><span class="h">Zusage</span><span class="h" style="text-align:center">Soll</span><span class="h" style="text-align:center">Ist</span><span></span></div>
+        <div class="pr ok"><span>Erster Link zum Anklicken</span><span class="d">24.09.</span><span class="d ist">23.09.</span><span class="m">✓</span></div>
+        <div class="pr ok"><span>Design-System sichtbar (Storybook)</span><span class="d">01.10.</span><span class="d ist">30.09.</span><span class="m">✓</span></div>
+        <div class="pr ok"><span>Anmeldung &amp; Benutzerverwaltung abnahmefähig</span><span class="d">22.10.</span><span class="d ist">21.10.</span><span class="m">✓</span></div>
+        <div class="pr ok"><span>Personalakte abnahmefähig</span><span class="d">20.11.</span><span class="d ist">20.11.</span><span class="m">✓</span></div>
+        <div class="pr late"><span>Fristen &amp; Erinnerungen abnahmefähig</span><span class="d">15.01.</span><span class="d ist">22.01.</span><span class="m">7 T</span></div>
+        <div class="pr run"><span>Überlassungen erfassbar</span><span class="d">05.02.</span><span class="d">–</span><span class="m">…</span></div>
+        <div class="pr run"><span>AÜG-Wächter abnahmefähig</span><span class="d">20.03.</span><span class="d">–</span><span class="m">…</span></div>
+      </div>
+      <div class="pad" style="padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-2)">
+        Auch die verfehlte Zusage steht hier. Eine Liste, in der alles grün ist, ist nach neun Jahren nichts wert.
+      </div>
+    </section>
+
+    <section class="card">
+      <header><h2>Was gerade schwierig ist</h2><span class="sub">2 offen</span></header>
+      <div>
+        <div class="risk y">
+          <h4>Anwaltliche Abnahme des Regelwerks steht noch aus</h4>
+          <dl>
+            <dt>Ursache</dt><dd>Nächster Termin bei der Kanzlei erst am 02.02.</dd>
+            <dt>Was wir tun</dt><dd>Wir bauen nach dem geprüften Entwurf weiter und kennzeichnen die 9 betroffenen Regeln als vorläufig.</dd>
+            <dt>Für Sie</dt><dd>Keine Terminverschiebung erwartet.</dd>
+          </dl>
+        </div>
+        <div class="risk r">
+          <h4>Anbindung der Krankenkassen (eAU) verschiebt sich um 2 Wochen</h4>
+          <dl>
+            <dt>Ursache</dt><dd>Der Dienstleister verlangt eine Betriebsnummer, die erst beantragt werden muss.</dd>
+            <dt>Was wir tun</dt><dd>Antrag ist am 19.01. raus. Bis dahin bleibt der manuelle Upload als Weg bestehen.</dd>
+            <dt>Für Sie</dt><dd>Betrifft Welle 6, nicht den AÜG-Wächter. Neuer Termin: 30.10.</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- RIGHT -->
+  <div>
+    <section class="card">
+      <header><h2>Zum Anklicken</h2><span class="sub" id="modsub"></span></header>
+      <div id="mods"></div>
+      <div class="qbox hidden" id="qbox">
+        <div style="font-size:12.5px;color:var(--ink-3);margin-bottom:7px">Ihre Frage zu <b id="qmod"></b></div>
+        <textarea id="qtext" placeholder="Zum Beispiel: Warum steht bei dem Mitarbeiter im Beispiel eine gelbe Ampel?"></textarea>
+        <div class="r">
+          <button class="pill" id="qsend">Frage absenden</button>
+          <button class="pill ghost" id="qcancel">Abbrechen</button>
+          <span class="sla">Antwort innerhalb eines Werktages</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <header><h2>Fortschritt</h2><span class="sub">Welle 3 von 10</span></header>
+      <div class="burn">
+        <svg viewBox="0 0 420 168" width="100%" height="168" role="img" aria-label="Aufbau der abgenommenen Arbeit über die Wellen 0 bis 5">
+          <g font-family="IBM Plex Mono, monospace" font-size="9">
+            <line x1="38" y1="14" x2="404" y2="14" stroke="var(--line)" stroke-width="1"/>
+            <line x1="38" y1="47" x2="404" y2="47" stroke="var(--line)" stroke-width="1"/>
+            <line x1="38" y1="80" x2="404" y2="80" stroke="var(--line)" stroke-width="1"/>
+            <line x1="38" y1="113" x2="404" y2="113" stroke="var(--line)" stroke-width="1"/>
+            <line x1="38" y1="140" x2="404" y2="140" stroke="var(--line-2)" stroke-width="1"/>
+            <text x="32" y="17" text-anchor="end" fill="var(--ink-3)">120</text>
+            <text x="32" y="50" text-anchor="end" fill="var(--ink-3)">90</text>
+            <text x="32" y="83" text-anchor="end" fill="var(--ink-3)">60</text>
+            <text x="32" y="116" text-anchor="end" fill="var(--ink-3)">30</text>
+            <text x="32" y="143" text-anchor="end" fill="var(--ink-3)">0</text>
+            <!-- abgenommen (Fläche) -->
+            <path d="M60,140 L120,136 L180,114 L240,96 L240,140 L60,140 Z" fill="var(--brand)" opacity=".22"/>
+            <polyline points="60,140 120,136 180,114 240,96" fill="none" stroke="var(--brand)" stroke-width="2.5" stroke-linejoin="round"/>
+            <!-- geplant (gestrichelt) -->
+            <polyline points="240,96 300,76 360,52 396,30" fill="none" stroke="var(--ink-3)" stroke-width="2" stroke-dasharray="5 4" stroke-linejoin="round"/>
+            <circle cx="240" cy="96" r="4.5" fill="var(--brand)"/>
+            <circle cx="240" cy="96" r="8" fill="none" stroke="var(--brand)" stroke-width="1.5" opacity=".45"/>
+            <text x="240" y="86" text-anchor="middle" fill="var(--brand-ink)" font-weight="600" font-size="9.5">41 PW</text>
+            <g fill="var(--ink-3)" text-anchor="middle">
+              <text x="60" y="156">W0</text><text x="120" y="156">W1</text><text x="180" y="156">W2</text>
+              <text x="240" y="156">W3</text><text x="300" y="156">W4</text><text x="360" y="156">W5</text><text x="396" y="156">W6</text>
+            </g>
+          </g>
+        </svg>
+        <div class="legend">
+          <span><i style="background:var(--brand)"></i>Von Ihnen abgenommen (Personenwochen)</span>
+          <span><i style="background:var(--ink-3)"></i>Geplant</span>
+        </div>
+        <p style="font-size:13px;color:var(--ink-2);margin:12px 0 4px">Die Kurve zeigt, was <em>wächst</em> — nicht, was fehlt. Ein Restbalken, der nie kleiner wird, war neun Jahre lang das Problem.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <header><h2>Aus der Maschine</h2><span class="sub">nicht handgeschrieben</span></header>
+      <div class="rulesbox">
+        <div class="big">87 / 87</div>
+        <p>Fachregeln mit eigenem, automatischem Test — alle grün. Fehlt zu einer Regel ein Test, lässt sich gar nicht erst ausliefern.</p>
+        <div class="bar"><i style="width:100%"></i></div>
+      </div>
+      <div class="mach" id="mach"></div>
+      <div class="pad" style="padding-top:12px;font-size:13px;color:var(--ink-2)">
+        Diese Werte kommen direkt aus den Werkzeugen. Ein Statusbericht kann optimistisch sein — ein Testbericht nicht.
+      </div>
+    </section>
+  </div>
+</div>
+
+<footer>
+  <span>Mimatoo Bautagebuch · Prototyp mit Beispieldaten · erstellt 09.09.2026</span>
+  <span>Vorschau-Umgebungen enthalten ausschließlich erfundene Personen</span>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- Beispieldaten ---------- */
+const DAYS=[
+ {d:"Mittwoch, 20. Januar 2027", meta:"Welle 3 „AÜG-Wächter“ · Tag 8 von 40 · zuletzt aktualisiert 18:04",
+  e:[
+   {t:"done",x:"Sie sehen beim Anlegen einer Überlassung jetzt, bis wann Sie einen Mitarbeiter zu diesem Kunden schicken dürfen.",
+     why:"Inklusive der Fälle, in denen ein anderer Verleiher denselben Mitarbeiter schon bei diesem Kunden im Einsatz hatte.",a:["Selbst ausprobieren"]},
+   {t:"done",x:"Der Personalbogen lässt sich als PDF drucken.",why:"Layout nach Ihrem Styleguide, mit Ihrem Logo.",a:["Ansehen"]},
+   {t:"work",x:"Im Hintergrund: die Unterbrechungsregel ist fertig — drei Monate und ein Tag setzen die 18-Monats-Frist zurück, kürzere Pausen nicht.",
+     why:"Mit 14 Testfällen abgesichert, darunter der Fall 12 Monate + 2 Monate Pause + 8 Monate, der heute in fast jeder Excel-Liste falsch gerechnet wird.",a:["Testbericht"]},
+   {t:"warn",x:"Die Anbindung der Krankenkassen (eAU) verschiebt sich um zwei Wochen.",
+     why:"Der Dienstleister verlangt eine Betriebsnummer, die erst beantragt werden muss. Antrag ist gestern raus. Betrifft Welle 6, nicht den AÜG-Wächter.",a:[]}
+  ]},
+ {d:"Dienstag, 19. Januar 2027", meta:"Welle 3 · Tag 7 von 40 · zuletzt aktualisiert 17:52",
+  e:[
+   {t:"done",x:"Sie können bei jedem Kunden eine abweichende Höchstüberlassungsdauer hinterlegen — mit Angabe des Tarifvertrags und Beleg.",
+     why:"Ohne Eintrag rechnet das System weiter mit 18 Monaten.",a:["Selbst ausprobieren"]},
+   {t:"done",x:"Konzernverbundene Kunden lassen sich verknüpfen.",
+     why:"Wichtig für die Drehtürklausel: War jemand vorher bei der Konzernmutter angestellt, gilt Equal Pay ab Tag 1.",a:["Ansehen"]},
+   {t:"work",x:"Im Hintergrund: die Datenstruktur für das Fristenkonto steht.",
+     why:"Ein Konto je Paar Mitarbeiter × Kunde — die Stelle, an der alle vier gesetzlichen Uhren zusammenlaufen.",a:[]}
+  ]},
+ {d:"Montag, 18. Januar 2027", meta:"Welle 3 · Tag 6 von 40 · zuletzt aktualisiert 18:11",
+  e:[
+   {t:"done",x:"Die neue GVP-Entgelttabelle ist eingespielt — alle neun Entgeltgruppen, mit den Ständen ab Januar 2026, September 2026 und April 2027.",
+     why:"Eingespielt als Datensatz, ohne neue Programmversion. Genau dafür ist diese Struktur gebaut.",a:["Tabelle ansehen"]},
+   {t:"warn",x:"Die Fristen-Abnahme kam sieben Tage später als zugesagt.",
+     why:"Ursache: Die Erinnerung zum mittleren Zeitpunkt hat bei Prüfhinweisen mit langen Zyklen falsch gerechnet. Wir haben den Fehler behoben und einen Test dafür angelegt (BR-P2-003), damit er nicht wiederkommt.",a:["Was war der Fehler?"]},
+   {t:"done",x:"Sie können Fristen jetzt auch an Ihre Mitarbeiter adressieren, nicht nur an Administratoren.",why:"",a:["Selbst ausprobieren"]}
+  ]}
+];
+
+const TRUST=[
+ {v:"14/15",k:"Zusagen gehalten",c:"g"},
+ {v:"4",k:"Module abgenommen",c:""},
+ {v:"2 / 3",k:"Baustellen offen",c:"d"},
+ {v:"87/87",k:"Fachregeln grün",c:"g"},
+ {v:"3",k:"Offene Fachfragen",c:"w"},
+ {v:"12 Min.",k:"zuletzt aktualisiert",c:""}
+];
+
+const MODS=[
+ {id:"F1",n:"Anmeldung & Benutzer",s:"abg",d:"abgenommen am 21.10.",acts:["Öffnen"]},
+ {id:"F2",n:"Standorte & Abteilungen",s:"abg",d:"abgenommen am 04.11.",acts:["Öffnen"]},
+ {id:"P1",n:"Personalakte",s:"abg",d:"abgenommen am 20.11.",acts:["Öffnen"]},
+ {id:"P2",n:"Fristen & Prüfhinweise",s:"test",d:"wartet auf Ihre Abnahme",acts:["Ausprobieren","Ich nehme ab","Frage stellen"]},
+ {id:"Z1",n:"Kunden / Entleiher",s:"abg",d:"abgenommen am 12.01.",acts:["Öffnen"]},
+ {id:"Z2",n:"Überlassungen",s:"bau",d:"in Arbeit seit 6 Tagen",acts:["Zwischenstand ansehen"]},
+ {id:"Z3",n:"AÜG-Wächter (Compliance)",s:"bau",d:"in Arbeit seit 2 Tagen",acts:["Zwischenstand ansehen"]},
+ {id:"P3",n:"Urlaub & Krankheit",s:"plan",d:"geplant für Welle 4",acts:["Was ist geplant?"]},
+ {id:"P4",n:"Zeiterfassung",s:"plan",d:"geplant für Welle 5",acts:["Was ist geplant?"]}
+];
+const SNAMES={abg:"Abgenommen",test:"Testbar",bau:"In Arbeit",plan:"Geplant"};
+
+const MACH=[
+ {k:"Letzter Build",v:"heute 14:22 · grün",c:"ok"},
+ {k:"Automatische Tests",v:"1.284 · alle grün",c:"ok"},
+ {k:"Dauer des Testlaufs",v:"6 min 41 s",c:""},
+ {k:"Testabdeckung der Fachlogik",v:"84 %",c:"ok"},
+ {k:"Letzte Auslieferung",v:"heute 14:38 · Testumgebung",c:""},
+ {k:"Verfügbarkeit (30 Tage)",v:"99,8 %",c:"ok"},
+ {k:"Offene Fachfragen",v:"3 · älteste seit 4 Tagen",c:"warn"},
+ {k:"Klickbare Vorschauen live",v:"7",c:""}
+];
+
+/* ---------- Aufbau ---------- */
+document.getElementById("trust").innerHTML=TRUST.map(t=>
+ `<div class="${t.c}"><div class="v">${t.v}</div><div class="k">${t.k}</div></div>`).join("");
+
+document.getElementById("mach").innerHTML=MACH.map(m=>
+ `<div class="mrow"><span class="k">${m.k}</span><span class="v ${m.c}">${m.v}</span></div>`).join("");
+
+function drawDay(i){
+  const d=DAYS[i];
+  document.getElementById("stamp").textContent=i===0?"aktuell":"aus dem Archiv";
+  const ICO={done:"✓",work:"◆",warn:"!"};
+  document.getElementById("day").innerHTML=
+   `<h3>${d.d}</h3><div class="meta">${d.meta}</div>`+
+   d.e.map(e=>`<div class="entry ${e.t}">
+      <span class="ic">${ICO[e.t]}</span>
+      <div><p>${e.x}</p>${e.why?`<div class="why">${e.why}</div>`:""}
+      ${e.a.length?`<div class="act">${e.a.map(a=>`<button class="pill${a==="Selbst ausprobieren"?"":" ghost"}" data-demo="1">${a} →</button>`).join("")}</div>`:""}
+      </div></div>`).join("");
+}
+document.querySelectorAll(".dchip").forEach(c=>c.addEventListener("click",()=>{
+  document.querySelectorAll(".dchip").forEach(x=>x.classList.remove("on"));
+  c.classList.add("on");drawDay(+c.dataset.d);
+}));
+
+function drawMods(){
+  const n=MODS.filter(m=>m.s==="abg").length;
+  document.getElementById("modsub").textContent=`${n} abgenommen · ${MODS.filter(m=>m.s==="bau").length} in Arbeit`;
+  document.getElementById("mods").innerHTML=MODS.map((m,i)=>{
+    const lng=m.s==="bau"&&/(\d+) Tagen/.test(m.d)&&+RegExp.$1>20;
+    return `<div class="mod">
+      <div><div class="id">${m.id}</div><div class="nm">${m.n}</div><div class="days${lng?" long":""}">${m.d}</div></div>
+      <span class="st ${m.s}">${SNAMES[m.s]}</span>
+      <div class="acts">${m.acts.map(a=>`<button class="pill${a==="Ich nehme ab"?"":" ghost"}" data-m="${i}" data-a="${a}">${a}</button>`).join("")}</div>
+    </div>`;}).join("");
+}
+
+/* ---------- Interaktion ---------- */
+const toast=document.getElementById("toast");let tmr;
+function say(t){toast.textContent=t;toast.classList.add("on");clearTimeout(tmr);tmr=setTimeout(()=>toast.classList.remove("on"),3600);}
+
+const qbox=document.getElementById("qbox");let qFor=null;
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.demo){say("Im echten Bautagebuch öffnet sich hier die klickbare Vorschau mit Beispieldaten.");return;}
+  if(b.dataset.a===undefined)return;
+  const m=MODS[+b.dataset.m],a=b.dataset.a;
+  if(a==="Ich nehme ab"){
+    m.s="abg";m.d="abgenommen am 20.01.";m.acts=["Öffnen"];drawMods();
+    say(`„${m.n}“ abgenommen. Das Protokoll geht an Sie und ans Team.`);
+  } else if(a==="Frage stellen"){
+    qFor=m;document.getElementById("qmod").textContent=m.n;
+    qbox.classList.remove("hidden");document.getElementById("qtext").focus();
+  } else {
+    say("Im echten Bautagebuch öffnet sich hier die klickbare Vorschau mit Beispieldaten.");
+  }
+});
+document.getElementById("qcancel").addEventListener("click",()=>{qbox.classList.add("hidden");document.getElementById("qtext").value="";});
+document.getElementById("qsend").addEventListener("click",()=>{
+  const t=document.getElementById("qtext").value.trim();
+  if(!t){say("Bitte schreiben Sie noch eine Frage hinein.");return;}
+  qbox.classList.add("hidden");document.getElementById("qtext").value="";
+  say(`Frage zu „${qFor.n}“ ist beim Team. Antwort innerhalb eines Werktages.`);
+});
+
+document.getElementById("tt").addEventListener("click",()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const dark=cur?cur==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+  document.documentElement.setAttribute("data-theme",dark?"light":"dark");
+});
+
+drawDay(0);drawMods();
+</script>
